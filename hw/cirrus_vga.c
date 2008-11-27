@@ -3245,8 +3245,12 @@ static void cirrus_vga_save(QEMUFile *f, void *opaque)
 
     vga_acc = (!!s->map_addr);
     qemu_put_8s(f, &vga_acc);
-    qemu_put_be64s(f, (uint64_t*)&s->lfb_addr);
-    qemu_put_be64s(f, (uint64_t*)&s->lfb_end);
+    /* XXX old versions saved rubbish here, keeping for compatibility */
+    qemu_put_be32(f, 0xffffffff);
+    qemu_put_be32(f, s->lfb_addr);
+    /* XXX old versions saved rubbish here, keeping for compatibility */
+    qemu_put_be32(f, 0xffffffff);
+    qemu_put_be32(f, s->lfb_end);
     qemu_put_buffer(f, s->vram_ptr, VGA_RAM_SIZE);
 }
 
@@ -3300,8 +3304,12 @@ static int cirrus_vga_load(QEMUFile *f, void *opaque, int version_id)
     qemu_get_be32s(f, &s->hw_cursor_y);
 
     qemu_get_8s(f, &vga_acc);
-    qemu_get_be64s(f, (uint64_t*)&s->lfb_addr);
-    qemu_get_be64s(f, (uint64_t*)&s->lfb_end);
+    /* XXX throwing away 32 bits */
+    qemu_get_be32(f);
+    qemu_get_be32s(f, &s->lfb_addr);
+    /* XXX throwing away 32 bits */
+    qemu_get_be32(f);
+    qemu_get_be32s(f, &s->lfb_end);
     qemu_get_buffer(f, s->vram_ptr, VGA_RAM_SIZE);
     if (vga_acc){
         cirrus_restart_acc(s);
