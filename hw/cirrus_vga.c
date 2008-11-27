@@ -3185,7 +3185,7 @@ void cirrus_restart_acc(CirrusVGAState *s)
     if (s->lfb_addr && s->lfb_end) {
         void *vram_pointer, *old_vram;
         fprintf(stderr, "cirrus_vga_load:re-enable vga acc.lfb_addr=0x%lx, lfb_end=0x%lx.\n",
-                s->lfb_addr, s->lfb_end);
+                (unsigned long)s->lfb_addr, (unsigned long)s->lfb_end);
         vram_pointer = set_vram_mapping(s->lfb_addr ,s->lfb_end);
         if (!vram_pointer){
             fprintf(stderr, "cirrus_vga_load:NULL vram_pointer\n");
