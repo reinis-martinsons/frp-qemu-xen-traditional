@@ -552,6 +552,7 @@ static int usb_pointer_poll(USBHIDState *hs, uint8_t *buf, int len)
 
     dz = int_clamp(e->dz, -127, 127);
 
+    e->dz -= dz;
     if (s->xyrel) {
         dx = int_clamp(e->xdx, -127, 127);
         dy = int_clamp(e->ydy, -127, 127);
@@ -592,9 +593,6 @@ static int usb_pointer_poll(USBHIDState *hs, uint8_t *buf, int len)
 	break;
 
     case USB_TABLET:
-	/* Appears we have to invert the wheel direction */
-	dz = 0 - dz;
-
 	buf[0] = b;
 	buf[1] = dx & 0xff;
 	buf[2] = dx >> 8;
