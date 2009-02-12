@@ -1,5 +1,5 @@
 extern char domain_name[64];
-extern int domid;
+extern int domid, domid_backend;
 
 #include <errno.h>
 

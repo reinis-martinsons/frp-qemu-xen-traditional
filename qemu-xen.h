@@ -48,14 +48,16 @@ void xenstore_write_vncport(int vnc_display);
 void xenstore_read_vncpasswd(int domid, char *pwbuf, size_t pwbuflen);
 void xenstore_write_vslots(char *vslots);
 
-int xenstore_domain_has_devtype(struct xs_handle *handle,
+int xenstore_domain_has_devtype_danger(struct xs_handle *handle,
                                 const char *devtype);
-char **xenstore_domain_get_devices(struct xs_handle *handle,
+char **xenstore_domain_get_devices_danger(struct xs_handle *handle,
                                    const char *devtype, unsigned int *num);
 char *xenstore_read_hotplug_status(struct xs_handle *handle,
-                                   const char *devtype, const char *inst);
+                                   const char *devtype,
+				   const char *inst_danger);
 char *xenstore_backend_read_variable(struct xs_handle *,
-                                     const char *devtype, const char *inst,
+                                     const char *devtype,
+				     const char *inst_danger,
                                      const char *var);
 int xenstore_subscribe_to_hotplug_status(struct xs_handle *handle,
                                          const char *devtype,
@@ -65,6 +67,18 @@ int xenstore_unsubscribe_from_hotplug_status(struct xs_handle *handle,
                                              const char *devtype,
                                              const char *inst,
                                              const char *token);
+
+ /* `danger' means that this parameter, variable or function refers to
+  * an area of xenstore which is writeable by the guest and thus must
+  * not be trusted by qemu code.  For variables containing xenstore
+  * paths, `danger' can mean that both the path refers to a
+  * guest-writeable area (so that data read from there is dangerous
+  * too) and that path's value was read from somewhere controlled by
+  * the guest (so writing to this path is not safe either).
+  */
+ /* When we're stubdom we don't mind doing as our domain tells us to,
+  * at least when it comes to running our own frontends
+  */
 
 int xenstore_vm_write(int domid, char *key, char *val);
 char *xenstore_vm_read(int domid, char *key, unsigned int *len);
