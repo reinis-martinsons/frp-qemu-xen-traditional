@@ -496,7 +496,7 @@ static void raw_aio_cancel(BlockDriverAIOCB *blockacb)
             qemu_aio_release(acb);
             break;
         }
-        pacb = &acb->next;
+        pacb = &(*pacb)->next;
     }
 }
 #endif
