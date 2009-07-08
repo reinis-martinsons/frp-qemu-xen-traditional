@@ -171,7 +171,7 @@ static void sdl_update(DisplayState *ds, int x, int y, int w, int h)
         rec.h = h;
         SDL_BlitSurface(shared, &rec, screen, &rec);
     }
-    SDL_Flip(screen);
+    SDL_UpdateRect(screen, x, y, w, h);
 }
 
 static void sdl_setdata(DisplayState *ds, void *pixels)
@@ -229,7 +229,7 @@ static void sdl_resize_shared(DisplayState *ds, int w, int h, int depth, int lin
         flags = SDL_OPENGL|SDL_RESIZABLE;
     else
 #endif
-        flags = SDL_HWSURFACE|SDL_ASYNCBLIT|SDL_HWACCEL|SDL_DOUBLEBUF|SDL_HWPALETTE;
+        flags = SDL_HWSURFACE|SDL_ASYNCBLIT|SDL_HWACCEL|SDL_HWPALETTE;
 
     if (gui_fullscreen) {
         flags |= SDL_FULLSCREEN;
