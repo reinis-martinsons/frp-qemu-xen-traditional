@@ -525,7 +525,7 @@ static void send_framebuffer_update_raw(VncState *vs, int x, int y, int w, int h
 
     vnc_framebuffer_update(vs, x, y, w, h, 0);
 
-    row = vs->ds->data + y * vs->ds->linesize + x * vs->depth;
+    row = vs->old_data + y * vs->ds->linesize + x * vs->depth;
     for (i = 0; i < h; i++) {
 	vs->write_pixels(vs, row, w * vs->depth);
 	row += vs->ds->linesize;
