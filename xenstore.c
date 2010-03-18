@@ -999,10 +999,6 @@ void xenstore_process_event(void *opaque)
         goto out;
     }
 
-    if (strncmp(vec[XS_WATCH_TOKEN], "hd", 2) ||
-        strlen(vec[XS_WATCH_TOKEN]) != 3)
-        goto out;
-
     hd_index = drive_name_to_index(vec[XS_WATCH_TOKEN]);
     if (hd_index == -1) {
 	fprintf(stderr,"medium change watch on `%s' -"
