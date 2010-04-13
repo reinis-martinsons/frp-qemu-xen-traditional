@@ -618,5 +618,11 @@ void pt_msix_delete(struct pt_dev *dev)
         munmap(dev->msix->phys_iomem_base, dev->msix->total_entries * 16);
     }
 
+    if (dev->msix->mmio_index > 0)
+    {
+        cpu_unregister_io_memory(dev->msix->mmio_index);
+    }
+
+
     free(dev->msix);
 }
