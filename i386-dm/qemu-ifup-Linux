@@ -33,5 +33,8 @@ then
    fi
 fi
 
+# We have to change mac address of tap device to not change bridge mac
+ip link set $1 addr fe:ff:ff:ff:ff:ff
+
 ifconfig $1 0.0.0.0 up
 brctl addif $bridge $1 || true
